@@ -1,0 +1,29 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<div class="row">
+    <div class="col-sm-2">
+        <form method="post" action="/issues/search">
+            <input class="form-control" type="text" name="searchName" placeholder="Search" aria-label="Search">
+        </form>
+    </div>
+    <div class="col-sm-2">
+        <form method="get" action="/issues/add">
+            <button type="submit" class="btn btn-info" data-toggle="modal">Create issue</button>
+        </form>
+    </div>
+</div>
+<h1>These bugs for you</h1>
+<div class="row">
+    #foreach($issue in $issues)
+        <div class="col-sm-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Name: $issue.name</h5>
+                    <p class="card-text">Description: $issue.description</p>
+                    <a href="/issues/update/$issue.id" class="card-link">Issue Link</a>
+                </div>
+            </div>
+        </div>
+    #end
+</div>
+#end

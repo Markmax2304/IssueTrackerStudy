@@ -1,0 +1,4 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h1>404 Something went wrong</h1>
+#end
