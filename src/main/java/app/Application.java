@@ -1,41 +1,33 @@
 package app;
 
-import app.DB.DBConnector;
-import app.Issue.Issue;
 import app.Issue.IssueController;
 import app.Issue.IssueDao;
+import app.models.User;
 import app.Util.Path;
 import app.Util.ViewUtil;
 import io.javalin.Javalin;
-import io.javalin.plugin.json.JavalinJson;
-import kong.unirest.GenericType;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.javalite.activejdbc.Base;
 
-import java.sql.SQLException;
-import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import static io.javalin.apibuilder.ApiBuilder.before;
 import static io.javalin.apibuilder.ApiBuilder.get;
 import static io.javalin.apibuilder.ApiBuilder.post;
 
-public class Application
-{
+public class Application {
     private static Javalin app;
     public static IssueDao issueDao;
 
-    public static void main(String[] args)
-    {
-        try
-        {
-            DBConnector.Connection();
-        }
-        catch (SQLException ex)
-        {
-            System.out.println(ex.getMessage());
-        }
-        issueDao = new IssueDao();
+    public static void main(String[] args) {
+        Base.open();
+        User testUser = new User("test name", "test2@gmail.com", "123456");
+        testUser.save();
+        System.out.println(testUser.getName());
+        Base.close();
+//            DBConnector.Connection();
+//        issueDao = new IssueDao();
 
         app = Javalin.create().start(7777);
 
@@ -59,14 +51,12 @@ public class Application
         Test_UpdateIssue();*/
     }
 
-    private static void Test_GetAllIssues()
-    {
+    private static void Test_GetAllIssues() {
         HttpResponse response = Unirest.get("http://localhost:7777/issues").asString();
         assertThat(response.getStatus()).isEqualTo(200);
     }
 
-    private static void Test_CreateNewIssue()
-    {
+    private static void Test_CreateNewIssue() {
         HttpResponse response = Unirest.get("http://localhost:7777/issues/add").asString();
         assertThat(response.getStatus()).isEqualTo(200);
 
@@ -76,8 +66,7 @@ public class Application
         assertThat(response.getStatus()).isEqualTo(302);
     }
 
-    private static void Test_CreateNewIssueWithEmptyName()
-    {
+    private static void Test_CreateNewIssueWithEmptyName() {
         HttpResponse response = Unirest.get("http://localhost:7777/issues/add").asString();
         assertThat(response.getStatus()).isEqualTo(200);
 
@@ -87,8 +76,7 @@ public class Application
         assertThat(response.getStatus()).isEqualTo(500);
     }
 
-    private static void Test_UpdateIssue()
-    {
+    private static void Test_UpdateIssue() {
         HttpResponse response = Unirest.get("http://localhost:7777/issues/update/1").asString();
         assertThat(response.getStatus()).isEqualTo(200);
 

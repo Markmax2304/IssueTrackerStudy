@@ -7,6 +7,10 @@
     <groupId>com.trellolike</groupId>
     <artifactId>trellolike</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <properties>
+        <activejdbc.version>2.3</activejdbc.version>
+        <environments>development.test,development</environments>
+    </properties>
     <build>
         <plugins>
             <plugin>
@@ -15,6 +19,64 @@
                 <configuration>
                     <source>8</source>
                     <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.javalite</groupId>
+                <artifactId>activejdbc-instrumentation</artifactId>
+                <version>${activejdbc.version}</version>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>instrument</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+            <plugin>
+                <groupId>org.javalite</groupId>
+                <artifactId>db-migrator-maven-plugin</artifactId>
+                <version>${activejdbc.version}</version>
+                <configuration>
+                    <configFile>${project.basedir}/src/main/resources/database.properties</configFile>
+                    <environments>${environments}</environments>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>dev_migrations</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>migrate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>mysql</groupId>
+                        <artifactId>mysql-connector-java</artifactId>
+                        <version>8.0.19</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <reportFormat>brief</reportFormat>
+                    <trimStackTrace>true</trimStackTrace>
+                    <useFile>false</useFile>
+                    <includes>
+                        <include>**/*Spec*.java</include>
+                        <include>**/*Test*.java</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/helpers/*</exclude>
+                        <exclude>**/*$*</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
         </plugins>
@@ -57,6 +119,28 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.10.1</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.javalite</groupId>
+            <artifactId>activejdbc</artifactId>
+            <version>${activejdbc.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>opensymphony</groupId>
+                    <artifactId>oscache</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.19</version>
         </dependency>
     </dependencies>
 
