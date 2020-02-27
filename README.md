@@ -19,14 +19,14 @@ Issue Tracker is study project for course TSS developed by Javalin
     mvn process-classes 
     (or) mvn activejdbc-instrumentation:instrument
 
-##Contributing
-###Consider naming conventions
-####Name of branches
+## Contributing
+### Consider naming conventions
+#### Name of branches
 
     feature-name
     fix-name
 
-####Name of commits
+#### Name of commits
 
     [FEATURE] name
     [FIX] name
