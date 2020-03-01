@@ -61,7 +61,7 @@ public class IssueController
             String userEmail = ctx.sessionAttribute("currentUser");
             User currentUser = User.findFirst("email = ?", userEmail);
             // if currentUser is null
-            int authorId = 3;
+            int authorId = 1;
             if(currentUser != null){
                 authorId = (int)currentUser.getId();
             }
@@ -161,7 +161,7 @@ public class IssueController
         String userEmail = ctx.sessionAttribute("currentUser");
         User currentUser = User.findFirst("email = ?", userEmail);
         // if currentUser is null
-        int userId = 3;
+        int userId = 1;
         if(currentUser != null){
             userId = (int)currentUser.getId();
         }

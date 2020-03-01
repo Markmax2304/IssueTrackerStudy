@@ -6,12 +6,24 @@ import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import static app.util.Route.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import app.models.User;
+import org.javalite.activejdbc.Base;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class Application {
     private static Javalin app;
 
     public static void main(String[] args) {
         app = Javalin.create().start(7777);
+
+        Base.open();
+        User user = User.findFirst("email = ?", "test5@gmail.com");
+        if(user != null && User.exists(user))
+        {
+            User testUser = new User("test name", "test5@gmail.com", BCrypt.hashpw("123456", "$2a$08$/w47HuWAfnuH6RPw7cuO9e"));
+            testUser.saveIt();
+        }
+        Base.close();
 
         app.routes(routes);
 
