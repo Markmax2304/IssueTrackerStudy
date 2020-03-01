@@ -2,12 +2,19 @@
 #@mainLayout()
 <div class="row">
     <div class="col-sm-2">
-        <form method="post" action="/issues/search">
-            <input class="form-control" type="text" name="searchName" placeholder="Search" aria-label="Search">
+        <form id="search_form" method="get" action="/issues/search/" onsubmit="search()">
+            <input class="form-control" type="text" name="searchName"
+                   placeholder="Search" aria-label="Search">
+            <script>
+                function search() {
+                    var name = document.getElementById('search_name').value;
+                    document.getElementById("search_form").valueOf().action = "/issues/search/" + name;
+                }
+            </script>
         </form>
     </div>
     <div class="col-sm-2">
-        <form method="get" action="/issues/add">
+        <form method="get" action="/issues/new">
             <button type="submit" class="btn btn-info" data-toggle="modal">Create issue</button>
         </form>
     </div>
@@ -20,7 +27,7 @@
                 <div class="card-body">
                     <h5 class="card-title">Name: $issue.name</h5>
                     <p class="card-text">Description: $issue.description</p>
-                    <a href="/issues/update/$issue.id" class="card-link">Issue Link</a>
+                    <a href="/issues/$issue.id" class="card-link">Issue Link</a>
                 </div>
             </div>
         </div>
