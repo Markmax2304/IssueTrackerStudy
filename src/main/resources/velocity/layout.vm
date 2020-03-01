@@ -20,12 +20,30 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 </head>
 <body>
-    <header>
-        <div class="container-fluid">
-            This is header
-        </div>
-        <br>
-    </header>
+<header>
+    <nav>
+##        <a href="/issues"><img id="logo" src="public/img/logo.svg" alt="Javalin TSS Bug Trucker"></a>
+        <a href="/issues">Issues</a>
+##        <ul id="chooseLanguage">
+##            <form>
+##                <li>
+##                    <button name="locale" value="en" style="background-image: url(public/img/english.png);"></button>
+##                </li>
+##            </form>
+##        </ul>
+        <ul id="menu">
+            #if($currentUser)
+                <li>
+                    <form method="post" action="/logout">
+                        <button id="logout">$msg.get("COMMON_NAV_LOGOUT")</button>
+                    </form>
+                </li>
+            #else
+                <li><a href="/login">$msg.get("COMMON_NAV_LOGIN")</a></li>
+            #end
+        </ul>
+    </nav>
+</header>
     <main>
         <div id="content" class="container-fluid">
             $bodyContent

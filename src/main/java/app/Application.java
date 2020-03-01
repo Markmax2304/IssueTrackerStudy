@@ -4,7 +4,6 @@ import app.util.ViewUtil;
 import io.javalin.Javalin;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-
 import static app.util.Route.*;
 import static org.assertj.core.api.Assertions.assertThat;
 

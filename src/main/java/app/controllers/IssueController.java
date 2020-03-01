@@ -9,7 +9,6 @@ import app.models.Issue;
 import app.models.User;
 import io.javalin.http.Handler;
 import org.apache.commons.lang3.StringUtils;
-import org.javalite.activejdbc.Base;
 
 import java.util.List;
 import java.util.Map;
@@ -19,7 +18,7 @@ import static app.util.RequestUtil.*;
 public class IssueController
 {
     public static Handler fetchAllIssues = ctx -> {
-        Map<String, Object> model = ViewUtil.getBaseModel(ctx);
+        Map<String, Object> model = ViewUtil.baseModel(ctx);
 
         List<Issue> issues = Issue.findAll();
         model.put("issues", issues);
@@ -28,7 +27,7 @@ public class IssueController
     };
 
     public static Handler searchIssueByName = ctx -> {
-        Map<String, Object> model = ViewUtil.getBaseModel(ctx);
+        Map<String, Object> model = ViewUtil.baseModel(ctx);
 
         String name = getQueryIssueSearchNameParam(ctx);
         // TODO: try to use 'like' statement
@@ -39,7 +38,7 @@ public class IssueController
     };
 
     public static Handler createNewIssue = ctx -> {
-        Map<String, Object> model = ViewUtil.getBaseModel(ctx);
+        Map<String, Object> model = ViewUtil.baseModel(ctx);
         ctx.render(Path.Template.ISSUES_ADD, model);
     };
 
@@ -81,7 +80,7 @@ public class IssueController
     };
 
     public static Handler fetchOneIssue = ctx -> {
-        Map<String, Object> model = ViewUtil.getBaseModel(ctx);
+        Map<String, Object> model = ViewUtil.baseModel(ctx);
 
         int issueId = getQueryIssueIdParam(ctx);
         Issue issue = Issue.findById(issueId);
