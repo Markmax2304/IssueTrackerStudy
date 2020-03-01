@@ -1,47 +1,20 @@
 package app;
 
-import app.Issue.IssueController;
-import app.Issue.IssueDao;
-import app.models.User;
-import app.Util.Path;
-import app.Util.ViewUtil;
+import app.util.ViewUtil;
 import io.javalin.Javalin;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import org.javalite.activejdbc.Base;
 
+import static app.util.Route.*;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import static io.javalin.apibuilder.ApiBuilder.before;
-import static io.javalin.apibuilder.ApiBuilder.get;
-import static io.javalin.apibuilder.ApiBuilder.post;
 
 public class Application {
     private static Javalin app;
-    public static IssueDao issueDao;
 
     public static void main(String[] args) {
-        Base.open();
-        User testUser = new User("test name", "test2@gmail.com", "123456");
-        testUser.save();
-        System.out.println(testUser.getName());
-        Base.close();
-//            DBConnector.Connection();
-//        issueDao = new IssueDao();
-
         app = Javalin.create().start(7777);
 
-        app.routes(() -> {
-            get("/", IssueController.fetchAllIssues);       // just test
-            get(Path.Web.ISSUES, IssueController.fetchAllIssues);
-            get(Path.Web.ISSUE_ADD, IssueController.createNewIssue);
-            get(Path.Web.ISSUE_UPDATE, IssueController.fetchOneIssue);
-            get(Path.Web.ISSUE_DELETE, IssueController.deleteIssue);
-
-            post(Path.Web.ISSUE_SEARCH, IssueController.searchIssueByName);
-            post(Path.Web.ISSUE_ADD, IssueController.addIssue);
-            post(Path.Web.ISSUE_CHANGE, IssueController.changeIssue);
-        });
+        app.routes(routes);
 
         app.error(404, ViewUtil.notFound);
 

@@ -12,7 +12,9 @@ public class User extends Model {
     public User(){ }
 
     public User(String name, String email, String password) {
-        set("name", name, "email", email, "password", password);
+        set("name", name,
+            "email", email,
+            "password", password);
     }
 
     public String getName()

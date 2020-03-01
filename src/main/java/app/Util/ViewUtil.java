@@ -1,4 +1,4 @@
-package app.Util;
+package app.util;
 
 import io.javalin.http.Context;
 import io.javalin.http.ErrorHandler;
