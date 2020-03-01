@@ -1,66 +1,65 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-10">
-            <form id="createIssue" method="post" action="/issues/add">
-                <div class="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" class="form-control" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="description">Description:</label>
-                    <textarea class="form-control" placeholder="Type a text" rows="5" name="description"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="critical">Critical:</label>
-                    <select class="form-control" name="critical">
-                        <option value="0">Minor</option>
-                        <option value="1">Major</option>
-                        <option value="2">Critical</option>
-                        <option value="3">Blocker</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="priority">Priority:</label>
-                    <select class="form-control" name="priority">
-                        <option value="0">Low</option>
-                        <option value="1">Medium</option>
-                        <option value="2">High</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="steps">Reconstruct steps of defect:</label>
-                    <textarea class="form-control" placeholder="Type a text" rows="5" name="steps"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="expected">Expected result:</label>
-                    <textarea class="form-control" placeholder="Type a text" rows="5" name="expected"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="actual">Actual restult:</label>
-                    <textarea class="form-control" placeholder="Type a text" rows="5" name="actual"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="assign">Assign:</label>
-                    <input type="text" class="form-control" name="assign">
-                </div>
-                <div class="form-group">
-                    <label for="status">Status:</label>
-                    <select class="form-control" name="status">
-                        <option value="0">New</option>
-                        <option value="1">Assigned</option>
-                        <option value="2">InProgress</option>
-                        <option value="3">Review</option>
-                        <option value="4">Fixed</option>
-                        <option value="5">Reopened</option>
-                        <option value="6">Closed</option>
-                        <option value="7">Canceled</option>
-                    </select>
-                </div>
-                <input type="submit" class="btn btn-success" value="Save">
-            </form>
-        </div>
+<form id="createIssue" method="post" action="/issues/add">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" class="form-control" name="name" required>
     </div>
-</div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea class="form-control" placeholder="Type a text" rows="5" name="description"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="critical">Critical:</label>
+        <select class="form-control" name="critical">
+            <option value="0">Minor</option>
+            <option value="1">Major</option>
+            <option value="2">Critical</option>
+            <option value="3">Blocker</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="priority">Priority:</label>
+        <select class="form-control" name="priority">
+            <option value="0">Low</option>
+            <option value="1">Medium</option>
+            <option value="2">High</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="steps">Reconstruct steps of defect:</label>
+        <textarea class="form-control" placeholder="Type a text" rows="5" name="steps"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="expected">Expected result:</label>
+        <textarea class="form-control" placeholder="Type a text" rows="5" name="expected"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="actual">Actual restult:</label>
+        <textarea class="form-control" placeholder="Type a text" rows="5" name="actual"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="assign">Assign:</label>
+        <select class="form-control" name="assign">
+            <option value="0">None</option>
+            #foreach($user in $users)
+                <option value="$user.getId()">$user.getName()</option>
+            #end
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="status">Status:</label>
+        <select class="form-control" name="status">
+            <option value="0">New</option>
+            <option value="1">Assigned</option>
+            <option value="2">InProgress</option>
+            <option value="3">Review</option>
+            <option value="4">Fixed</option>
+            <option value="5">Reopened</option>
+            <option value="6">Closed</option>
+            <option value="7">Canceled</option>
+        </select>
+    </div>
+    <input type="submit" class="btn btn-success" value="Save">
+</form>
 #end

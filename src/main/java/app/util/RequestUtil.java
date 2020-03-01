@@ -81,11 +81,15 @@ public class RequestUtil
         return ctx.formParam("actual");
     }
 
-    public static String getQueryIssueAssign(Context ctx) {
-        return ctx.formParam("assign");
+    public static int getQueryIssueAssignId(Context ctx) {
+        return Integer.parseInt(ctx.formParam("assign"));
     }
 
     public static StatusType getQueryIssueStatus(Context ctx) {
         return StatusType.getEnum(Integer.parseInt(ctx.formParam("status")));
+    }
+
+    public static String getQueryIssueCommentMessage(Context ctx) {
+        return ctx.formParam("comment_message");
     }
 }

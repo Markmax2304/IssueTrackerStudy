@@ -24,6 +24,7 @@ public class Route
         get("/issues/:id", IssueController.fetchOneIssue);
         post("/issues/update/:id", IssueController.changeIssue);
         post("/issues/delete/:id", IssueController.deleteIssue);
+        post("/issues/comment/:id", IssueController.addCommentToIssue);
         post("/issues/add", IssueController.addIssue);
 
         after(ctx -> {Base.close();});
