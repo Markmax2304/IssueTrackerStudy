@@ -45,15 +45,16 @@ public class Issue extends Model {
     public String getSteps(){return getString("steps");}
     public String getExpected(){return getString("expected");}
     public String getActual(){return getString("actual");}
-    // TODO: add getExecutorName too, if it will need
-    public int getExecutorId(){return getInteger("executor_id");}
+    public int getExecutorId(){
+        try{ return getInteger("executor_id"); }
+        catch (Exception ex) { return 0; }
+    }
     public StatusType getStatus(){
         return StatusType.getEnum(getInteger("status"));
     }
     public String getStatusStringNumber(){
         return String.valueOf(getInteger("status"));
     }
-    // TODO: test these methods
     public Date getCreatedDate(){
         return getDate("created_at");
     }
@@ -61,6 +62,6 @@ public class Issue extends Model {
         return getDate("updated_at");
     }
     public int getAuthorId(){
-        return getInteger("author_id");
+        return getInteger("user_id");
     }
 }

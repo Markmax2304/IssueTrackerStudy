@@ -1,5 +1,6 @@
 package app.controllers;
 
+import app.models.Comment;
 import app.util.enums.CriticalType;
 import app.util.enums.PriorityType;
 import app.util.enums.StatusType;
@@ -56,17 +57,21 @@ public class IssueController
             String expected = getQueryIssueExpected(ctx);
             String actual = getQueryIssueActual(ctx);
             StatusType status = getQueryIssueStatus(ctx);
-            // TODO: now it's test, later rewrite
-            int authorId = 1;
+
+            String userEmail = ctx.sessionAttribute("currentUser");
+            User currentUser = User.findFirst("email = ?", userEmail);
+            // if currentUser is null
+            int authorId = 3;
+            if(currentUser != null){
+                authorId = (int)currentUser.getId();
+            }
 
             Issue newIssue = new Issue(name, description, critical, priority, steps,
                     expected, actual, status, authorId);
 
-            // TODO: rewrite to dropdown list of user names
-            User executor = User.findFirst("name = ?", getQueryIssueAssign(ctx));
-            if (executor != null)
-            {
-                newIssue.set("executor_id", executor.getId());
+            int assignId = getQueryIssueAssignId(ctx);
+            if (User.exists(assignId)) {
+                newIssue.set("executor_id", assignId);
             }
 
             newIssue.saveIt();
@@ -86,6 +91,13 @@ public class IssueController
         Issue issue = Issue.findById(issueId);
         model.put("oneIssue", issue);
 
+        List<Comment> comments = Comment.find("issue_id = ?", issueId);
+        // TODO: sort list by created time
+        model.put("comments", comments);
+
+        List<User> users = User.findAll();
+        model.put("users", users);
+
         ctx.render(Path.Template.ISSUES_UPDATE, model);
     };
 
@@ -102,7 +114,7 @@ public class IssueController
         try
         {
             int issueId = getQueryIssueIdParam(ctx);
-            Issue changedIssue = Issue.findFirst("id = ?", issueId);
+            Issue changedIssue = Issue.findById(issueId);
 
             String name = getQueryIssueName(ctx);
             String description = getQueryIssueDescription(ctx);
@@ -125,13 +137,14 @@ public class IssueController
                 "expected", expected,
                 "actual", actual,
                 "status", status.getValue()
-            ).saveIt();
+            );
 
-            // TODO: rewrite to dropdown list of user names
-            User executor = User.findFirst("name = ?", getQueryIssueAssign(ctx));
-            if(executor != null){
-                changedIssue.set("executor_id", executor.getId());
+            int assignId = getQueryIssueAssignId(ctx);
+            if (User.exists(assignId)) {
+                changedIssue.set("executor_id", assignId);
             }
+
+            changedIssue.saveIt();
         }
         catch (Exception ex){
             System.out.println(ex.getMessage());
@@ -139,5 +152,23 @@ public class IssueController
         finally {
             ctx.redirect("/issues");
         }
+    };
+
+    public static Handler addCommentToIssue = ctx -> {
+        int issueId = getQueryIssueIdParam(ctx);
+        String commentMessage = getQueryIssueCommentMessage(ctx);
+
+        String userEmail = ctx.sessionAttribute("currentUser");
+        User currentUser = User.findFirst("email = ?", userEmail);
+        // if currentUser is null
+        int userId = 3;
+        if(currentUser != null){
+            userId = (int)currentUser.getId();
+        }
+
+        Comment comment = new Comment(commentMessage, userId, issueId);
+        comment.saveIt();
+
+        ctx.redirect("/issues/" + issueId);
     };
 }
