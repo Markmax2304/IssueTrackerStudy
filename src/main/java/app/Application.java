@@ -2,6 +2,7 @@ package app;
 
 import app.util.ViewUtil;
 import io.javalin.Javalin;
+import io.javalin.http.Handler;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
 import static app.util.Route.*;
