@@ -14,7 +14,7 @@ public class Application {
     private static Javalin app;
 
     public static void main(String[] args) {
-        app = Javalin.create().start(7777);
+        app = Javalin.create().start(80);
 
         Base.open();
         User user = User.findFirst("email = ?", "test5@gmail.com");
