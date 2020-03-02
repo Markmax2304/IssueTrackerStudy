@@ -16,14 +16,14 @@ public class Application {
     public static void main(String[] args) {
         app = Javalin.create().start(80);
 
-        Base.open();
-        User user = User.findFirst("email = ?", "test5@gmail.com");
-        if(!User.exists(user))
-        {
-            User testUser = new User("test name", "test5@gmail.com", BCrypt.hashpw("123456", "$2a$08$/w47HuWAfnuH6RPw7cuO9e"));
-            testUser.save();
-        }
-        Base.close();
+//        Base.open();
+//        User user = User.findFirst("email = ?", "test5@gmail.com");
+//        if(!User.exists(user))
+//        {
+//            User testUser = new User("test name", "test5@gmail.com", BCrypt.hashpw("123456", "$2a$08$/w47HuWAfnuH6RPw7cuO9e"));
+//            testUser.save();
+//        }
+//        Base.close();
 
         app.routes(routes);
 
