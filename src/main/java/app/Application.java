@@ -18,10 +18,10 @@ public class Application {
 
         Base.open();
         User user = User.findFirst("email = ?", "test5@gmail.com");
-        if(user == null)
+        if(!User.exists(user))
         {
             User testUser = new User("test name", "test5@gmail.com", BCrypt.hashpw("123456", "$2a$08$/w47HuWAfnuH6RPw7cuO9e"));
-            testUser.saveIt();
+            testUser.save();
         }
         Base.close();
 
