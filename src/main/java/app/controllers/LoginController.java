@@ -28,7 +28,7 @@ public class LoginController {
             if (getQueryLoginRedirect(ctx) != null) {
                 ctx.redirect(getQueryLoginRedirect(ctx));
             }
-            ctx.redirect(Path.Web.ISSUES);
+            ctx.redirect(Path.Web.PROJECTS);
         }
     };
 

@@ -1,0 +1,86 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<div class="row">
+    <div class="col-sm-8">
+        <h2>Project name: <i>$project.name</i></h2>
+        <p>Project access: <i>$project.getAccessString()</i></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-2">
+        <form id="create_project_form" method="get" action="/issues/new"  onsubmit="generateProjectId()">
+            <input id="project_id" class="form-control btn-info" type="text" name="projectId"
+                   value="$project.id" hidden>
+            <input type="submit" class="btn form-control btn-info" value="Create new issue">
+            <script>
+                function generateProjectId() {
+                    var projectId = document.getElementById('project_id').value;
+                    document.getElementById("create_project_form").valueOf().action = "/issues/new";
+                }
+            </script>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-2">
+        <form id="searchForm" method="get" action="/issues/search/$project.id" onsubmit="generateIssueName()">
+            <input id="searchName" class="form-control" type="text" name="searchName"
+                   placeholder="Search" aria-label="Search">
+            <script>
+                function generateIssueName() {
+                    var name = document.getElementById('searchName').value;
+                    document.getElementById("searchForm").valueOf().action = "/issues/search/$project.id";
+                }
+            </script>
+        </form>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4">
+        <form id="add_user_form" method="post">
+            <div class="form-group">
+                <label for="add_user">Adding user:</label>
+                <select class="form-control" name="add_user">
+                    #foreach($user in $otherUsers)
+                        <option value="$user.getId()">$user.getName()</option>
+                    #end
+                </select>
+                <input type="submit", formaction="/projects/add-user/$project.id"
+                       class="btn btn-success", value="Add User">
+            </div>
+            <div class="form-group">
+                <label for="remove_user">Removing user:</label>
+                <select class="form-control" name="remove_user">
+                    #foreach($user in $projectUsers)
+                        <option value="$user.getId()">$user.getName()</option>
+                    #end
+                </select>
+                <input type="submit", formaction="/projects/remove-user/$project.id"
+                       class="btn btn-danger", value="Remove User">
+            </div>
+        </form>
+    </div>
+</div>
+<h3>Issues:</h3>
+<div class="row">
+    #foreach($issue in $issues)
+        <div class="col-sm-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Name: $issue.name</h5>
+                    <p class="card-text">Description: $issue.description</p>
+                    <a href="/issues/one/$issue.id" class="card-link">Issue Link</a>
+                </div>
+            </div>
+        </div>
+    #end
+</div>
+<div class="row">
+    <div class="col-sm-2">
+        <form id="deleteProject" method="post">
+            <input type="submit", formaction="/projects/delete/$project.id"
+                   class="btn btn-danger", value="Delete Project">
+        </form>
+    </div>
+</div>
+#end

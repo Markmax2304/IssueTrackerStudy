@@ -33,7 +33,7 @@ public class RequestUtil
         return (String) ctx.sessionAttribute("locale");
     }
 
-    public static String getSessionCurrentUser(Context ctx) {
+    public static String getSessionCurrentUserEmail(Context ctx) {
         return (String) ctx.sessionAttribute("currentUser");
     }
 
@@ -49,7 +49,7 @@ public class RequestUtil
         return loginRedirect;
     }
 
-    public static int getQueryIssueIdParam(Context ctx) {
+    public static int getQueryIdParam(Context ctx) {
         return Integer.parseInt(ctx.pathParam("id"));
     }
 
@@ -89,6 +89,10 @@ public class RequestUtil
         return Integer.parseInt(ctx.formParam("assign"));
     }
 
+    public static int getQueryIssueProjectId(Context ctx) {
+        return Integer.parseInt(ctx.formParam("projectId"));
+    }
+
     public static StatusType getQueryIssueStatus(Context ctx) {
         return StatusType.getEnum(Integer.parseInt(ctx.formParam("status")));
     }
@@ -96,4 +100,18 @@ public class RequestUtil
     public static String getQueryIssueCommentMessage(Context ctx) {
         return ctx.formParam("comment_message");
     }
+
+    public static String getQueryProjectName(Context ctx) { return ctx.formParam("projectName"); }
+
+    public static AccessType getQueryProjectAccess(Context ctx) {
+        return AccessType.getEnum(Integer.parseInt(ctx.formParam("access")));
+    }
+
+    public static int getQueryProjectIdParam(Context ctx) {
+        return Integer.parseInt(ctx.queryParam("projectId"));
+    }
+
+    public static int getQueryAddUserId(Context ctx) { return  Integer.parseInt(ctx.formParam("add_user")); }
+
+    public static int getQueryRemoveUserId(Context ctx) { return  Integer.parseInt(ctx.formParam("remove_user")); }
 }
