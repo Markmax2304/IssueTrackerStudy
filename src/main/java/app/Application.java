@@ -18,6 +18,7 @@ public class Application {
         app.routes(routes);
 
         app.error(404, ViewUtil.notFound);
+        app.error(500, ViewUtil.serverError);
 
         /*Test_GetAllIssues();
         Test_CreateNewIssue();

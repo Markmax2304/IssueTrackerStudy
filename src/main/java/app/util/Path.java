@@ -11,6 +11,7 @@ public class Path
         public static final String ISSUES_ADD = "/velocity/issue/add-issue.vm";
         public static final String ISSUES_UPDATE = "/velocity/issue/one-issue.vm";
         public static final String NOT_FOUND = "/velocity/notFound.vm";
+        public static final String SERVER_ERROR = "/velocity/serverError.vm";
     }
 
     public static class Web {
