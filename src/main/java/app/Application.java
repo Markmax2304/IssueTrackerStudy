@@ -11,7 +11,9 @@ public class Application {
     private static Javalin app;
 
     public static void main(String[] args) {
-        app = Javalin.create().start(7777);
+        app = Javalin.create(config -> {
+            config.addStaticFiles("/public");
+        }).start(7777);
 
         app.routes(routes);
 
