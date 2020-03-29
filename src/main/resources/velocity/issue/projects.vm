@@ -1,0 +1,23 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<div class="row">
+    <div class="col-sm-2">
+        <form method="get" action="/projects/new">
+            <button type="submit" class="btn btn-info" data-toggle="modal">Create new project</button>
+        </form>
+    </div>
+</div>
+<h1>Projects:</h1>
+<div class="row">
+    #foreach($project in $projects)
+        <div class="col-sm-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Name: $project.name</h5>
+                    <a href="/projects/$project.id" class="card-link">Project Link</a>
+                </div>
+            </div>
+        </div>
+    #end
+</div>
+#end

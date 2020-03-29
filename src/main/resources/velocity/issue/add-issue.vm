@@ -2,6 +2,9 @@
 #@mainLayout()
 <form id="createIssue" method="post" action="/issues/add">
     <div class="form-group">
+        <input type="text" class="form-control" name="projectId" hidden value="$currentProject.id">
+    </div>
+    <div class="form-group">
         <label for="name">Name:</label>
         <input type="text" class="form-control" name="name" required>
     </div>

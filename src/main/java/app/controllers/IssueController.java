@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.models.Comment;
+import app.models.Project;
 import app.util.enums.CriticalType;
 import app.util.enums.PriorityType;
 import app.util.enums.StatusType;
@@ -18,11 +19,28 @@ import static app.util.RequestUtil.*;
 
 public class IssueController
 {
-    public static Handler fetchAllIssues = ctx -> {
+    public static Handler fetchProjectIssues = ctx -> {
         Map<String, Object> model = ViewUtil.baseModel(ctx);
 
-        List<Issue> issues = Issue.findAll();
+        int projectId = getQueryIdParam(ctx);
+        Project project = Project.findById(projectId);
+        model.put("project", project);
+
+        List<Issue> issues = Issue.find("project_id = ?", projectId);
         model.put("issues", issues);
+
+        List<User> projectUsers = project.getAll(User.class);
+        model.put("projectUsers", projectUsers);
+
+        List<User> otherUsers = User.findAll();
+        for (int i = 0; i < projectUsers.size(); i++){
+            for(int j = 0; j < otherUsers.size(); j++){
+                if(projectUsers.get(i).getId() == otherUsers.get(j).getId()){
+                    otherUsers.remove(j);
+                }
+            }
+        }
+        model.put("otherUsers", otherUsers);
 
         ctx.render(Path.Template.ISSUES, model);
     };
@@ -30,9 +48,26 @@ public class IssueController
     public static Handler searchIssueByName = ctx -> {
         Map<String, Object> model = ViewUtil.baseModel(ctx);
 
+        int projectId = getQueryIdParam(ctx);
+        Project project = Project.findById(projectId);
+        model.put("project", project);
+
+        List<User> projectUsers = project.getAll(User.class);
+        model.put("projectUsers", projectUsers);
+
+        List<User> otherUsers = User.findAll();
+        for (int i = 0; i < projectUsers.size(); i++){
+            for(int j = 0; j < otherUsers.size(); j++){
+                if(projectUsers.get(i).getId() == otherUsers.get(j).getId()){
+                    otherUsers.remove(j);
+                }
+            }
+        }
+        model.put("otherUsers", otherUsers);
+
         String name = getQueryIssueSearchNameParam(ctx);
-        // TODO: try to use 'like' statement
-        List<Issue> issue = Issue.where("name = ?", name);
+        List<Issue> issue = Issue.findBySQL("select issues.* from issues where (issues.name like '%" + name + "%' or " +
+                "issues.description like '%" + name + "%') and issues.project_id = " + projectId);
         model.put("issues", issue);
 
         ctx.render(Path.Template.ISSUES, model);
@@ -40,10 +75,18 @@ public class IssueController
 
     public static Handler createNewIssue = ctx -> {
         Map<String, Object> model = ViewUtil.baseModel(ctx);
+
+        int projectId = getQueryProjectIdParam(ctx);
+        Project project = Project.findById(projectId);
+        model.put("currentProject", project);
+
         ctx.render(Path.Template.ISSUES_ADD, model);
     };
 
     public static Handler addIssue = ctx -> {
+
+        int projectId = getQueryIssueProjectId(ctx);
+
         try
         {
             String name = getQueryIssueName(ctx);
@@ -60,14 +103,10 @@ public class IssueController
 
             String userEmail = ctx.sessionAttribute("currentUser");
             User currentUser = User.findFirst("email = ?", userEmail);
-            // if currentUser is null
-            int authorId = 1;
-            if(currentUser != null){
-                authorId = (int)currentUser.getId();
-            }
+            int authorId = (int)currentUser.getId();
 
             Issue newIssue = new Issue(name, description, critical, priority, steps,
-                    expected, actual, status, authorId);
+                    expected, actual, status, authorId, projectId);
 
             int assignId = getQueryIssueAssignId(ctx);
             if (User.exists(assignId)) {
@@ -80,14 +119,14 @@ public class IssueController
             System.out.println(ex.getMessage());
         }
         finally {
-            ctx.redirect("/issues");
+            ctx.redirect("/projects/" + projectId);
         }
     };
 
     public static Handler fetchOneIssue = ctx -> {
         Map<String, Object> model = ViewUtil.baseModel(ctx);
 
-        int issueId = getQueryIssueIdParam(ctx);
+        int issueId = getQueryIdParam(ctx);
         Issue issue = Issue.findById(issueId);
         model.put("oneIssue", issue);
 
@@ -95,6 +134,7 @@ public class IssueController
         // TODO: sort list by created time
         model.put("comments", comments);
 
+        // assigned users
         List<User> users = User.findAll();
         model.put("users", users);
 
@@ -103,18 +143,23 @@ public class IssueController
 
     public static Handler deleteIssue = ctx -> {
 
-        int issueId = getQueryIssueIdParam(ctx);
+        int issueId = getQueryIdParam(ctx);
         Issue issue = Issue.findById(issueId);
-        issue.delete();
+        int projectId = issue.getProjectId();
+        issue.delete(true);
 
-        ctx.redirect("/issues");
+        ctx.redirect("/projects/" + projectId);
     };
 
     public static Handler changeIssue = ctx -> {
+
+        int projectId = -1;
+
         try
         {
-            int issueId = getQueryIssueIdParam(ctx);
+            int issueId = getQueryIdParam(ctx);
             Issue changedIssue = Issue.findById(issueId);
+            projectId = changedIssue.getProjectId();
 
             String name = getQueryIssueName(ctx);
             String description = getQueryIssueDescription(ctx);
@@ -150,25 +195,20 @@ public class IssueController
             System.out.println(ex.getMessage());
         }
         finally {
-            ctx.redirect("/issues");
+            ctx.redirect(projectId == -1 ? Path.Web.PROJECTS : "/projects/" + projectId);
         }
     };
 
     public static Handler addCommentToIssue = ctx -> {
-        int issueId = getQueryIssueIdParam(ctx);
+        int issueId = getQueryIdParam(ctx);
         String commentMessage = getQueryIssueCommentMessage(ctx);
 
         String userEmail = ctx.sessionAttribute("currentUser");
         User currentUser = User.findFirst("email = ?", userEmail);
-        // if currentUser is null
-        int userId = 1;
-        if(currentUser != null){
-            userId = (int)currentUser.getId();
-        }
 
-        Comment comment = new Comment(commentMessage, userId, issueId);
+        Comment comment = new Comment(commentMessage, (int)currentUser.getId(), issueId);
         comment.saveIt();
 
-        ctx.redirect("/issues/" + issueId);
+        ctx.redirect("/issues/one/" + issueId);
     };
 }

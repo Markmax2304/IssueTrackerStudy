@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS projects (
+  id INTEGER AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(512) NOT NULL,
+  access INTEGER NOT NULL,
+  creator_id INTEGER NOT NULL,
+    FOREIGN KEY (creator_id)
+        REFERENCES users(id)
+) ENGINE = InnoDB;

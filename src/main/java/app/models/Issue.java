@@ -15,7 +15,7 @@ public class Issue extends Model {
     public Issue(){ }
 
     public Issue(String name, String description, CriticalType criticalType, PriorityType priorityType,
-                 String steps, String expected, String actual, StatusType statusType, int authorId)
+                 String steps, String expected, String actual, StatusType statusType, int authorId, int projectId)
     {
         set("name", name,
             "description", description,
@@ -25,7 +25,8 @@ public class Issue extends Model {
             "expected", expected,
             "actual", actual,
             "status", statusType.getValue(),
-            "user_id", authorId);
+            "user_id", authorId,
+            "project_id", projectId);
     }
 
     public String getName(){return getString("name");}
@@ -64,4 +65,5 @@ public class Issue extends Model {
     public int getAuthorId(){
         return getInteger("user_id");
     }
+    public int getProjectId() { return getInteger("project_id"); }
 }
