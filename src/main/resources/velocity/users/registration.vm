@@ -1,6 +1,8 @@
 #parse("/velocity/layout.vm")
 #@mainLayout()
-<h3>Errors:</h3>
+#if($errors)
+    <h3>Errors:</h3>
+#end
 #foreach($error in $errors.entrySet())
     <h5 class="card-title">$error.getKey(): $error.getValue()</h5><br>
 #end
