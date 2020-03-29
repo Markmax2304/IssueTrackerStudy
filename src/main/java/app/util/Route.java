@@ -19,7 +19,8 @@ public class Route
         get(Path.Web.LOGIN, LoginController.serveLoginPage);
         post(Path.Web.LOGIN, LoginController.handleLoginPost);
         post(Path.Web.LOGOUT, LoginController.handleLogoutPost);
-        get("/", ProjectController.fetchAllProjects);       // just test
+        get("/", ProjectController.fetchAllProjects);
+        get(Path.Web.USE_OF_TERMS, ViewUtil.getTermOfUse);
         get(Path.Web.PROJECTS, ProjectController.fetchAllProjects);
         get(Path.Web.PROJECTS_NEW, ProjectController.createNewProject);
         get(Path.Web.ISSUES, IssueController.fetchProjectIssues);
@@ -34,8 +35,8 @@ public class Route
         post(Path.Web.ISSUE_DELETE, IssueController.deleteIssue);
         post(Path.Web.ISSUE_COMMENT, IssueController.addCommentToIssue);
         post(Path.Web.ISSUE_ADD, IssueController.addIssue);
-        get("/users/new", UsersController.createNewUser);
-        post("/users/add", UsersController.addUser);
+        get(Path.Web.USER_NEW, UsersController.createNewUser);
+        post(Path.Web.USER_ADD, UsersController.addUser);
 
         after(ctx -> {Base.close();});
     };
