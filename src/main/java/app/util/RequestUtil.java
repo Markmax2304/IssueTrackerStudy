@@ -21,6 +21,10 @@ public class RequestUtil
         return ctx.formParam("password");
     }
 
+    public static String getQueryUserName(Context ctx) {
+        return ctx.formParam("name");
+    }
+
     public static String getQueryLoginRedirect(Context ctx) {
         return ctx.queryParam("loginRedirect");
     }
