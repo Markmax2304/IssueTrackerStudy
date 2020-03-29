@@ -24,4 +24,8 @@ public class ViewUtil {
     public static ErrorHandler notFound = ctx -> {
         ctx.render(Path.Template.NOT_FOUND, baseModel(ctx));
     };
+
+    public static ErrorHandler serverError = ctx -> {
+        ctx.render(Path.Template.SERVER_ERROR, baseModel(ctx));
+    };
 }

@@ -1,0 +1,5 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h1 class="card-title text-center">Error 500</h1>
+<h3 class="card-title text-center">something went wrong</h3>
+#end
