@@ -92,15 +92,12 @@
     <footer class="footer">
         <br>
         <div class="container">
-            <p class="float-right">
-                <a href="#">Back to top</a>
-            </p>
             <div class="row">
                 <div class="col-sm-4">
                     Copyright © 2020. All rights reserved.
                 </div>
                 <div class="col-sm-2">
-                    <a href="#">Terms of Use</a>
+                    <a href="/term-of-use">Terms of Use</a>
                 </div>
             </div>
         </div>
