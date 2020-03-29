@@ -1,0 +1,16 @@
+#parse("/velocity/layout.vm")
+#@mainLayout()
+<h3>Errors:</h3>
+#foreach($error in $errors.entrySet())
+    <h5 class="card-title">$error.getKey(): $error.getValue()</h5><br>
+#end
+<form method="post" action="/users/add">
+    <label for="name">Name:</label><br>
+    <input type="text" name="name" placeholder="Name" value=""><br>
+    <label>$msg.get("LOGIN_LABEL_EMAIL")</label><br>
+    <input type="text" name="email" placeholder="$msg.get("LOGIN_LABEL_EMAIL")" value=""><br>
+    <label>$msg.get("LOGIN_LABEL_PASSWORD")</label><br>
+    <input type="password" name="password" placeholder="$msg.get("LOGIN_LABEL_PASSWORD")" value=""><br><br>
+    <input type="submit" class="btn btn-success" value="Register">
+</form>
+#end

@@ -41,7 +41,7 @@ public class LoginController {
     // The origin of the request (request.pathInfo()) is saved in the session so
     // the user can be redirected back after login
     public static Handler ensureLoginBefore = ctx -> {
-        if (ctx.path().startsWith(Path.Web.LOGIN)) {
+        if (ctx.path().startsWith(Path.Web.LOGIN) || ctx.path().startsWith("/users")) {
             return;
         }
         if (ctx.sessionAttribute("currentUser") == null) {

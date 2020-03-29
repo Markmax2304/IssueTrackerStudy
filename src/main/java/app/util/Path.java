@@ -4,6 +4,7 @@ public class Path
 {
     public static class Template {
         public static final String LOGIN = "/velocity/login/login.vm";
+        public static final String REGISTRATION = "/velocity/users/registration.vm";
         public static final String ISSUES = "/velocity/issue/issues.vm";
         public static final String ISSUES_ADD = "/velocity/issue/add-issue.vm";
         public static final String ISSUES_UPDATE = "/velocity/issue/one-issue.vm";

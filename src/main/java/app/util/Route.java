@@ -2,6 +2,7 @@ package app.util;
 
 import app.controllers.IssueController;
 import app.controllers.LoginController;
+import app.controllers.UsersController;
 import io.javalin.apibuilder.EndpointGroup;
 import org.javalite.activejdbc.Base;
 
@@ -26,6 +27,8 @@ public class Route
         post("/issues/delete/:id", IssueController.deleteIssue);
         post("/issues/comment/:id", IssueController.addCommentToIssue);
         post("/issues/add", IssueController.addIssue);
+        get("/users/new", UsersController.createNewUser);
+        post("/users/add", UsersController.addUser);
 
         after(ctx -> {Base.close();});
     };
