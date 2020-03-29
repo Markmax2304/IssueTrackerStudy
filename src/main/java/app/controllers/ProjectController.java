@@ -80,6 +80,10 @@ public class ProjectController
     public static Handler addUserToProject = ctx -> {
         int projectId = getQueryIdParam(ctx);
         int userId = getQueryAddUserId(ctx);
+        if(userId == -1){
+            ctx.redirect(Path.Web.PROJECTS);
+            return;
+        }
 
         Project project = Project.findById(projectId);
         User user = User.findById(userId);
@@ -92,6 +96,10 @@ public class ProjectController
     public static Handler removeUserFromProject = ctx -> {
         int projectId = getQueryIdParam(ctx);
         int userId = getQueryRemoveUserId(ctx);
+        if(userId == -1){
+            ctx.redirect(Path.Web.PROJECTS);
+            return;
+        }
 
         Project project = Project.findById(projectId);
         User user = User.findById(userId);

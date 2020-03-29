@@ -111,7 +111,23 @@ public class RequestUtil
         return Integer.parseInt(ctx.queryParam("projectId"));
     }
 
-    public static int getQueryAddUserId(Context ctx) { return  Integer.parseInt(ctx.formParam("add_user")); }
+    public static int getQueryAddUserId(Context ctx) {
+        try
+        {
+            return Integer.parseInt(ctx.formParam("add_user"));
+        }
+        catch (Exception ex){
+            return -1;
+        }
+    }
 
-    public static int getQueryRemoveUserId(Context ctx) { return  Integer.parseInt(ctx.formParam("remove_user")); }
+    public static int getQueryRemoveUserId(Context ctx) {
+        try
+        {
+            return Integer.parseInt(ctx.formParam("remove_user"));
+        }
+        catch (Exception ex){
+            return -1;
+        }
+    }
 }
